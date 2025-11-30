@@ -1,65 +1,175 @@
-import Image from "next/image";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { SketchfabEmbed } from "@/components/sketchfab-embed";
+import { getAllModels, getPersonalData } from "@/lib/data";
+import { Instagram, Mail, Box } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import * as motion from "motion/react-client"
+
+import { Vortex } from "@/components/ui/shadcn-io/vortex";
 
 export default function Home() {
+  const personalData = getPersonalData();
+  const models = getAllModels();
+
+  const newestModels = models
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
+
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex-1 w-full">
+        {/* Hero Section */}
+
+        <motion.section
+          className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-background flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <motion.div
+                className="space-y-2"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <motion.h1
+                  className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none font-heading text-primary"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                >
+                  {personalData.name}
+                </motion.h1>
+                <motion.p
+                  className="mx-auto max-w-[700px] text-muted-foreground md:text-xl"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
+                  {personalData.role} de {personalData.location}.
+                </motion.p>
+                <motion.p
+                  className="mx-auto max-w-[700px] text-muted-foreground"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                  {personalData.bio}
+                </motion.p>
+              </motion.div>
+              <motion.div
+                className="space-x-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+              >
+                {personalData.socials.instagram && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                    style={{ display: 'inline-block' }} // Ensure button doesn't take full width
+                  >
+                    <Button variant="outline" size="icon" asChild>
+                      <Link href={personalData.socials.instagram} target="_blank">
+                        <Instagram className="h-4 w-4" />
+                        <span className="sr-only">Instagram</span>
+                      </Link>
+                    </Button>
+                  </motion.div>
+                )}
+                {personalData.socials.sketchfab && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.9 }}
+                    style={{ display: 'inline-block' }}
+                  >
+                    <Button variant="outline" size="icon" asChild>
+                      <Link href={personalData.socials.sketchfab} target="_blank">
+                        <Box className="h-4 w-4" />
+                        <span className="sr-only">Sketchfab</span>
+                      </Link>
+                    </Button>
+                  </motion.div>
+                )}
+                {personalData.socials.email && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 1.0 }}
+                    style={{ display: 'inline-block' }}
+                  >
+                    <Button variant="outline" size="icon" asChild>
+                      <Link href={personalData.socials.email}>
+                        <Mail className="h-4 w-4" />
+                        <span className="sr-only">Email</span>
+                      </Link>
+                    </Button>
+                  </motion.div>
+                )}
+              </motion.div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Gallery Section */}
+        <motion.section
+          className="w-full py-12 md:py-24 lg:py-32 bg-muted/50 flex flex-col items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1.0 }}
+        >
+          <div className="container px-4 md:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8 text-center font-heading">
+              Portfolio
+            </h2>
+            <div className="flex flex-wrap justify-center gap-6 w-full">
+              {newestModels.map((model, index) => (
+                <motion.div
+                  key={model.slug}
+                  className="flex flex-col space-y-2 w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] max-w-sm"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 + 1 }}
+                >
+                  <SketchfabEmbed url={model.sketchfab_url} title={model.title} />
+                  <div className="p-4 bg-card rounded-lg border shadow-sm">
+                    <h3 className="text-xl font-bold">{model.title}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {model.description}
+                    </p>
+                    <div className="mt-4 flex gap-2">
+                      {model.tags && model.tags.map(tag => (
+                        <span key={tag} className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            {models.length === 0 && (
+              <p className="text-center text-muted-foreground">No models found. Add some TOML files to content/models/</p>
+            )}
+          </div>
+
+          <div className="flex justify-center mt-8">
+            <a href="/models" className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+              Ver todos los modelos
+            </a>
+          </div>
+
+        </motion.section>
       </main>
-    </div>
+      <Footer />
+    </div >
   );
 }

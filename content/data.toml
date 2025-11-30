@@ -1,0 +1,9 @@
+name = "Victor"
+role = "Artista 3D"
+location = "Venezuela"
+bio = "Disfruto creando arte y juegos. Me especializo en diseño de personajes y arte de entornos."
+
+[socials]
+instagram = "https://www.instagram.com/_victorcstr_/"
+sketchfab = "https://sketchfab.com/Victorcstr"
+# email = "mailto:victor@example.com"
