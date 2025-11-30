@@ -5,7 +5,6 @@ import { getAllModels, getPersonalData } from "@/lib/data";
 import { Instagram, Mail, Box } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { CategoriesFilterDropdownMenu } from "@/components/categoriesFilterDropdownMenu";
 
 import * as motion from "motion/react-client";
 
